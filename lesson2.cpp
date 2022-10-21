@@ -1,9 +1,9 @@
 #include <iostream>
+#include <utility>
 #include <vector>
 #include <algorithm>
 #include <chrono>
 #include <fstream>
-#include <regex>
 
 class Timer
 {
@@ -12,14 +12,14 @@ private:
     using second_t = std::chrono::duration<double, std::ratio<1> >;
     std::string m_name;
     std::chrono::time_point<clock_t> m_beg;
-    double elapsed() const
+    [[nodiscard]] double elapsed() const
     {
         return std::chrono::duration_cast<second_t>(clock_t::now()
                                                     -m_beg).count();
     }
 public:
     Timer() : m_beg(clock_t::now()) { }
-    Timer(std::string name) : m_name(name), m_beg(clock_t::now()) { }
+    explicit Timer(std::string name) : m_name(std::move(name)), m_beg(clock_t::now()) { }
     void start(std::string name) {
         m_name = name;
         m_beg = clock_t::now();
@@ -63,7 +63,7 @@ void l2_task1()
 
     delete a;
     delete b;
-};
+}
 
 
 //Реализуйте шаблонную функцию SortPointers, которая принимает вектор указателей
@@ -129,7 +129,7 @@ void count_if_find()
         while(getline(ifs, line))
         {
             // сравниваем каждый символ в строке с правилом
-            count += std::count_if(line.begin(), line.end(), is_vowel);
+            count += int(std::count_if(line.begin(), line.end(), is_vowel));
         }
         std::cout << "Number of vowels: " << count << std::endl;
 
@@ -164,7 +164,7 @@ void count_if_for()
         while(getline(ifs, line))
         {
             // сравниваем каждый символ в строке с правилом
-            count += std::count_if(line.begin(), line.end(), is_vowel);
+            count += int(std::count_if(line.begin(), line.end(), is_vowel));
         }
         std::cout << "Number of vowels: " << count << std::endl;
 

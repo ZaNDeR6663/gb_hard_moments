@@ -201,7 +201,7 @@ PhoneBook::PhoneBook(std::ifstream& ifs)
 
     ifs.close();
 
-};
+}
 
 std::ostream& operator<<(std::ostream &os, PhoneBook &ph) {
     if(ph.book.empty())
