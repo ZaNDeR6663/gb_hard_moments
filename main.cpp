@@ -17,8 +17,11 @@ void l3_task2();
 void l3_task3();
 
 // lesson 4
-void l4_task1();
-void l4_task2();
+//void l4_task1();
+//void l4_task2();
+
+void l5_task1();
+void l5_task2();
 
 int main() {
 // lesson 1
@@ -37,8 +40,12 @@ int main() {
 //    l3_task3();
 
 // lesson 4
-    l4_task1();
+//    l4_task1();
     l4_task2();
+
+// lesson 5
+    l5_task1();
+    l5_task2();
 
     return 0;
 

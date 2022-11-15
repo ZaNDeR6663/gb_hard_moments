@@ -3,4 +3,4 @@ project(gb_hard_moments)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(gb_hard_moments main.cpp lesson2.cpp lesson1.cpp lesson3.cpp lesson4.cpp)
+add_executable(gb_hard_moments main.cpp lesson2.cpp lesson1.cpp lesson3.cpp lesson4.cpp lesson5.cpp)
