@@ -1,30 +1,4 @@
-#include <iostream>
-#include <optional>
-#include <utility>
-#include <tuple>
-#include <vector>
-#include <utility>
-#include <fstream>
-#include <algorithm>
-
-class Person{
-public:
-    Person(std::string a, std::string b, std::optional<std::string> c=std::nullopt)
-            : first_name(std::move(b)), second_name(std::move(a)), sur_name(std::move(c)) {};
-
-    std::string getFirstName(){return first_name;};
-    std::string getSecondName(){return second_name;};
-    std::string getSurname(){return sur_name.has_value() ? sur_name.value() : "";};
-private:
-    std::string first_name;
-    std::string second_name;
-    std::optional<std::string> sur_name;
-
-    friend std::ostream& operator<<(std::ostream& os, Person& person);
-    friend bool operator<(Person& p1, Person& p2);
-    friend bool operator==(Person& p1, Person& p2);
-
-};
+#include "lesson1.h"
 
 std::ostream& operator<<(std::ostream &os, Person& person) {
     os << person.second_name << "\t";
@@ -45,36 +19,13 @@ bool operator<(Person &p1, Person &p2) {
            std::tie(p2.second_name, p2.first_name, p2.sur_name);
 }
 
-void l1_task1()
-{
-    Person person1("Plotnikov", "Andrey");
-    Person person2("Plotnikov", "Andrey", "Vladimirovich");
-    std::cout << person1 << std::endl;
-    std::cout << person2 << std::endl;
 
-    std::cout << std::boolalpha << "p1 less then p2:  " << (person1 < person2) << std::endl;
-    std::cout << std::boolalpha << "p1 eq to p2: " << (person1 == person2) << std::endl;
 
-}
+
+
 
 /// -----------------------------------------------------------------------------------------------------
 
-class PhoneNumber
-{
-public:
-    PhoneNumber(int a, int b, std::string c, std::optional<int> d=std::nullopt)
-            : countryCode(a), cityCode(b), number(std::move(c)), additionalNum(d) {};
-    PhoneNumber() = default;
-private:
-    int countryCode;
-    int cityCode;
-    std::string number;
-    std::optional<int> additionalNum;
-
-    friend std::ostream&operator<<(std::ostream&os, PhoneNumber& ph);
-    friend bool operator<(PhoneNumber& ph1, PhoneNumber &ph2);
-    friend bool operator==(PhoneNumber& ph1, PhoneNumber &ph2);
-};
 
 std::ostream &operator<<(std::ostream &os, PhoneNumber &ph) {
     std::cout << "+" << ph.countryCode;
@@ -96,17 +47,7 @@ bool operator==(PhoneNumber &ph1, PhoneNumber &ph2) {
            std::tie(ph2.cityCode, ph2.countryCode, ph2.number, ph2.additionalNum);
 }
 
-void l1_task2()
-{
-    PhoneNumber ph1(12, 13, "123456", 3);
-    PhoneNumber ph2(12, 13, "123456", 3);
 
-    std::cout << ph1 << std::endl;
-    std::cout << ph2 << std::endl;
-
-    std::cout << "ph1 eq ph2: " << std::boolalpha << (ph1==ph2) << std::endl;
-    std::cout << "ph1 less then ph2: " << std::boolalpha << (ph1<ph2) << std::endl;
-}
 
 
 /// ---------------------------------------------------------------------------------------------
@@ -116,20 +57,7 @@ void l1_task2()
 //– поток данных, полученных из файла. В теле конструктора происходит считывание данных из файла и заполнение контейнера.
 //Класс PhoneBook должен содержать перегруженный оператор вывода, для вывода всех данных из контейнера в консоль.
 
-class PhoneBook
-{
-public:
-    explicit PhoneBook(std::ifstream& ifs);
-    void SortByName();
-    void SortByPhone();
-    std::tuple<std::string, PhoneNumber> GetPhoneNumber(const std::string& secondName);
-    void ChangePhoneNumber(Person p, const PhoneNumber& ph);
 
-private:
-    std::vector<std::pair<Person, PhoneNumber>> book;
-
-    friend std::ostream& operator<<(std::ostream& os, PhoneBook& ph);
-};
 
 PhoneBook::PhoneBook(std::ifstream& ifs)
 {
@@ -266,46 +194,3 @@ void PhoneBook::ChangePhoneNumber(Person p, const PhoneNumber& ph) {
     }
 }
 
-
-void l1_task3()
-{
-
-    std::ifstream file("../PhoneBook.txt"); // путь к файлу PhoneBook.txt
-    PhoneBook book(file);
-
-    std::cout << book;
-    std::cout << "------SortByPhone-------" << std::endl;
-    book.SortByPhone();
-    std::cout << book;
-    std::cout << "------SortByName--------" << std::endl;
-    book.SortByName();
-    std::cout << book;
-    std::cout << "-----GetPhoneNumber-----" << std::endl;
-
-// лямбда функция, которая принимает фамилию и выводит номер телефона
-//    человека, либо строку с ошибкой
-    auto print_phone_number = [&book](const std::string& surname){
-        std::cout << surname << "\t";
-        auto answer = book.GetPhoneNumber(surname);
-        if (std::get<0>(answer).empty())
-            std::cout << std::get<1>(answer);
-        else
-            std::cout << std::get<0>(answer);
-        std::cout << std::endl;
-    };
-
-// вызовы лямбды
-    print_phone_number("Ivanov");
-    print_phone_number("Petrov");
-    std::cout << "----ChangePhoneNumber----" << std::endl;
-
-    book.ChangePhoneNumber(Person{ "Kotov", "Vasilii", "Eliseevich" },
-                           PhoneNumber{7, 123, "15344458", std::nullopt});
-
-    book.ChangePhoneNumber(Person{ "Mironova", "Margarita", "Vladimirovna" },
-                           PhoneNumber{ 16, 465, "9155448", 13 });
-
-
-    std::cout << book;
-
-}

@@ -65,7 +65,6 @@ void l4_task2()
 //    copy(vs.begin(), vs.end(), ostream_iterator<string>(cout, "\n"));
 
     const size_t data_points{ 100 };
-    const size_t sample_points{ 100 };
 
     std::random_device rd;
     std::mt19937 gen{ rd() };
